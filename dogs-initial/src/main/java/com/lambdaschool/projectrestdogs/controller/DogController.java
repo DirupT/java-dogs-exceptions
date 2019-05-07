@@ -27,16 +27,13 @@ public class DogController
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getDogDetail(@PathVariable long id)
     {
-        Dog rtnDog;
+        Dog rtnDog = ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id));
 
-        if(ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id)) == null)
+        if(rtnDog == null)
         {
-            throw new ResourceNotFoundException("Dog with id" + id + " not found");
+            throw new ResourceNotFoundException("Dog with id " + id + " not found");
         }
-        else
-        {
-            rtnDog = ProjectrestdogsApplication.ourDogList.findDog(d -> (d.getId() == id));
-        }
+
         return new ResponseEntity<>(rtnDog, HttpStatus.OK);
     }
 
